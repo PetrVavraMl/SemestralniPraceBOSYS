@@ -91,18 +91,15 @@ void *customer(int *my_id)
 		}
 	}
 	if (ticket >= tickets) {
-        printf("test");
-        setbuf(stderr,NULL);
-        fprintf(stderr, C_CUSTOMER_ERR "customer %2d: failed to reserve a ticket" C_NORMAL "\n", *my_id);
-        /*fflush(stderr);
-        fflush(stdout);
-        fflush(stdin);*/
-
+        //Změnil jsem stream stderr na stdout, protože stderr z nějakého důvodu nevypisoval instantně do konzole.
+        // A to i po změně bufferování příkazem setbufv a použítím příkazu fflush.
+        fprintf(stdout, C_CUSTOMER_ERR "customer %2d: failed to reserve a ticket" C_NORMAL "\n", *my_id);
     }
 
 	// increase number of finished reservation attempts
 	++reservation_attempts;
 
+    //po tom, co se všichni zákaznící pokusí o rezervaci pošli signál semaforu pokladníkovi
     if(reservation_attempts >= customers){
         printf("\nSTOP %d",reservation_attempts);
         printf("\n");
@@ -114,10 +111,6 @@ void *customer(int *my_id)
     }
 	// reservation was successful, buy reserved ticket
 	printf(C_CUSTOMER "customer %2d: sending payment for the ticket id %d" C_NORMAL "\n", *my_id, ticket);
-
-
-
-
 	return NULL;
 }
 
@@ -187,10 +180,7 @@ int main(int argc, char *argv[])
 {
     // print id
     printf("Modified by: st64189 Vávra Petr\n");
-    setvbuf(stderr,NULL,_IONBF,1024);
 
-    fprintf(stderr, C_CUSTOMER_ERR "customer DYCK failed to reserve a ticket" C_NORMAL "\n");
-    fflush(NULL);
     //pthread_mutex_init(&mutex,NULL);
     sem_init(&rezervaceSem,0,SEM_SYNC_INIT_VALUE);
     sem_init(&pokladnikSem,0,SEM_SYNC_INIT_VALUE);
