@@ -1,0 +1,3 @@
+/home/peta/bosys/cmake-build-debug/CMakeFiles/bosys.dir
+/home/peta/bosys/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/peta/bosys/cmake-build-debug/CMakeFiles/rebuild_cache.dir
