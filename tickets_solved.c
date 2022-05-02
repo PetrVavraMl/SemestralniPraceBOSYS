@@ -97,9 +97,7 @@ void *customer(int *my_id) {
     for (ticket = 0; ticket < tickets; ++ticket) {    // find the first non-reserved ticket
 
         if (0 == reservations[ticket]) {
-
             reservations[ticket] = *my_id;    // reserve
-
             printf(C_CUSTOMER "customer %2d: reserved the ticket id %d" C_NORMAL "\n", *my_id, ticket);
             break;
         }
@@ -193,7 +191,6 @@ int main(int argc, char *argv[]) {
     // print id
     printf("Modified by: st64189 Vávra Petr\n");
 
-    //pthread_mutex_init(&mutex,NULL);
     sem_init(&rezervaceSemafor, 0, SEM_SYNC_INIT_VALUE);
     sem_init(&pokladnikSemafor, 0, SEM_SYNC_INIT_VALUE);
     sem_init(&vlastnikSemafor, 0, SEM_SYNC_INIT_VALUE);
@@ -201,6 +198,7 @@ int main(int argc, char *argv[]) {
 
     //nastavení bariéry pro synchronní start všech vláken
     pthread_barrier_init(&barieraSynStart, NULL, customers + 2);
+
     pthread_barrier_init(&barieraZakaznici, NULL, customers);
 
 
@@ -243,7 +241,6 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
 
-    //sem_wait(&pokladnik2Semafor);
     // create customer threads
     for (c = 0; c < customers; ++c) {
         pthread_mutex_lock(&mutexZakazniciMain);
