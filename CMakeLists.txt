@@ -4,4 +4,4 @@ project(bosys C)
 set(CMAKE_C_STANDARD 11)
 
 add_executable(bosys
-        tickets.c)
+        tickets_solved.c)
