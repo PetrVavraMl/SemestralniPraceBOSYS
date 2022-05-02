@@ -81,7 +81,6 @@ void release_resources(void) {
 // synchronize start of all threads
 void sync_threads() {
     pthread_barrier_wait(&barieraSynStart);
-
 }
 
 // customer thread function
@@ -104,8 +103,6 @@ void *customer(int *my_id) {
     }
     pthread_mutex_unlock(&mutexRezervace);
     if (ticket >= tickets) {
-        //Změnil jsem stream stderr na stdout, protože stderr z nějakého důvodu nevypisoval instantně do konzole.
-        // A to i po změně bufferování příkazem setbufv a použítím příkazu fflush.
         fprintf(stderr, C_CUSTOMER_ERR "customer %2d: failed to reserve a ticket" C_NORMAL "\n", *my_id);
     }
 
@@ -113,7 +110,6 @@ void *customer(int *my_id) {
     pthread_mutex_lock(&mutexRezervacePokusy);
     ++reservation_attempts;
     pthread_mutex_unlock(&mutexRezervacePokusy);
-
 
     // unsuccessful reservation, return
     if (ticket >= tickets) {
@@ -188,9 +184,6 @@ void *owner(void *arg) {
 
 // main thread function
 int main(int argc, char *argv[]) {
-    // print id
-    printf("Modified by: st64189 Vávra Petr\n");
-
     sem_init(&rezervaceSemafor, 0, SEM_SYNC_INIT_VALUE);
     sem_init(&pokladnikSemafor, 0, SEM_SYNC_INIT_VALUE);
     sem_init(&vlastnikSemafor, 0, SEM_SYNC_INIT_VALUE);
@@ -198,9 +191,7 @@ int main(int argc, char *argv[]) {
 
     //nastavení bariéry pro synchronní start všech vláken
     pthread_barrier_init(&barieraSynStart, NULL, customers + 2);
-
     pthread_barrier_init(&barieraZakaznici, NULL, customers);
-
 
     pthread_t tid_owner;
     pthread_t tid_cashier;
@@ -208,8 +199,8 @@ int main(int argc, char *argv[]) {
     int customer_ids[MAX_CUSTOMERS];
     int c;
 
-    /*// print id
-    printf("Modified by: st64189 Vávra Petr\n");*/
+    // print id
+    printf("Modified by: st64189 Vávra Petr\n");
 
     if (argc > 1) {
         // accept the number of tickets and customers as arguments
@@ -234,7 +225,6 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
 
-
     // create cashier thread
     if (pthread_create(&tid_cashier, NULL, cashier, NULL)) {
         perror("pthread_create: cashier");
@@ -250,11 +240,7 @@ int main(int argc, char *argv[]) {
             perror("pthread_create: customer");
             return EXIT_FAILURE;
         }
-
     }
-
-
-
 
     // join all threads: customers, cashier, owner
     for (c = 0; c < customers; ++c) {
