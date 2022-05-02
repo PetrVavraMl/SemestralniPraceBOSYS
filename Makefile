@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -D_REENTRANT -g
+CFLAGS = -Wall -D_REENTRANT -g -D_GNU_SOURCE -Dsymbol
 #D_REENTRANT - vícevláknový program
 #Wall - vypisuje varování
 # -g - zahrnuje symboly pro debugger
